@@ -2,63 +2,93 @@ import React, {Component} from 'react';
 
 class UserForm extends Component {
 
-    formSubmit = (url, val, event) => {
-        event.preventDefault();
-        var data ={
-            "name": this.name.value,
-            "surname": this.surname.value,
-            "file": this.file.files[0],
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: null,
+            surname: null,
+            file: null,
         };
-        fetch( url, {
-            method: 'POST',
-            headers:{ 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        }).then(resp => resp.json())
-            .then(res =>  val ? this.props.addtoList(res.message) : this.props.updateList(res.message))
-            .catch( error => console.log(error))
+    }
+
+    setValue = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+        console.log(event.target.name, event.target.value);
     };
 
+    handleOnFileChange = (e) => {
+        let file = e.target.files[0];
+        this.setState({
+            [e.target.name]: file
+        })
+    };
+
+    formSubmit = (val, event) => {
+        event.preventDefault();
+        var send = true;
+        for (let i in this.state) {
+            if (!this.state[i]) {
+                send = false;
+            }
+        }
+        if (send) {
+            console.log('img append', this.state.img);
+            fetch(event.target.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.state)
+            }).then(resp => resp.json())
+                .then(res => val ? this.props.updateList(res.message) : this.props.addtoList(res.message))
+                .catch(error => console.log(error))
+        } else {
+            console.log(this.state, 'not send')
+        }
+    };
 
     render() {
         return (
             <React.Fragment>
-
-                {this.props.user && this.props.addOrCreate !== true ? (
+                {this.props.user && this.props.addOrCreate !== true ?
+                    (
                         <React.Fragment>
-                            <form onSubmit={this.formSubmit.bind(this, 'http://127.0.0.1:8000/api/test/' + this.props.user.id + '/', 1)}>
-                                <input type='text' ref={(ref) => {
-                                    this.name = ref
-                                }} name='name'/><br/>
-                                <input type='text' ref={(ref) => {
-                                    this.surname = ref
-                                }} name='surname'/><br/>
-                                <img src={ this.props.user.img.includes('media/') ?
+                            <form action={'http://127.0.0.1:8000/api/test/' + this.props.user.id + '/'}
+                                  onSubmit={this.formSubmit.bind(this, 1)}>
+                                <label>Name *</label><br/>
+                                <input type='text'
+                                       onChange={this.setValue} name='name'/><br/>
+                                <label>Surname *</label><br/>
+                                <input type='text' onChange={this.setValue} name='surname'/><br/>
+                                <img src={this.props.user.img.includes('media/') ?
                                     'http://127.0.0.1:8000' + this.props.user.img
                                     : 'http://127.0.0.1:8000/media/' + this.props.user.img}/><br/>
-                                <input type='file' ref={(ref) => {
-                                    this.file = ref
-                                }}/><br/>
+                                <input className="image" type='file' onChange={this.setValue} name='file'/><br/>
                                 <button type='submit'>save</button>
                             </form>
-                        </React.Fragment>)
+                        </React.Fragment>
+                    )
                     : (
                         <React.Fragment>
-                            <form onSubmit={this.formSubmit.bind(this, 'http://127.0.0.1:8000/api/test/', 0)}>
-                                <input type='text' ref={(ref) => {
-                                    this.name = ref
-                                }} name='name'/><br/>
-                                <input type='text' ref={(ref) => {
-                                    this.surname = ref
-                                }} name='surname'/><br/>
-                                <input type='file' ref={(ref) => {
-                                    this.file = ref
-                                }}/><br/>
+                            <form action='http://127.0.0.1:8000/api/test/' onSubmit={this.formSubmit.bind(this, 0)}>
+                                <label>Name *</label><br/>
+                                <input className={this.state.name ? null : 'border'} type='text'
+                                       onChange={this.setValue}
+                                       name='name'/><br/>
+                                <label>Surname *</label><br/>
+                                <input className={this.state.surname ? null : 'border'} type='text'
+                                       onChange={this.setValue}
+                                       name='surname'/><br/>
+                                <input className="image" type='file' name="file"
+                                       onChange={this.handleOnFileChange}
+                                /><br/>
                                 <button type='submit'>save</button>
                             </form>
-                        </React.Fragment>)
+                        </React.Fragment>
+                    )
                 }
-
-
             </React.Fragment>
         )
     }

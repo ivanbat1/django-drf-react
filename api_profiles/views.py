@@ -17,11 +17,12 @@ class Test(APIView):
 
     def post(self, request):
         """ add user in db"""
+        print(request.data)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': serializer.data})
-        return Response({'message': 'bad'})
+        return Response({'message': serializer.errors})
 
     def put(self, request, pk=None):
         return Response({'message': 'call put method'})
@@ -37,7 +38,7 @@ class TestApiDetail(APIView):
         try:
             return Profile.objects.get(pk=pk)
         except Profile.DoesNotExist:
-            return ('bad')
+            return Response({'message': 'user except'})
 
     def get(self, request, pk, format='json'):
         """ method get user on id """
@@ -46,7 +47,7 @@ class TestApiDetail(APIView):
         if snippet == 'abd':
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = UserProfileSerializers(snippet)
-        return Response({'serializer': serializer.data})
+        return Response({'message': serializer.data})
 
     def post(self, request, pk):
         """ call update method """
@@ -54,7 +55,7 @@ class TestApiDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({'message': serializer.data})
-        return Response({'message': 'bad'})
+        return Response({'message': serializer.errors})
 
     def delete(self, request, pk):
         user = self.get_object(pk)

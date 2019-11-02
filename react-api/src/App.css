@@ -20,3 +20,12 @@ table, th, td {
     margin-left: 100px;
     border: 1px solid white;
 }
+
+.border {
+    border-color: red !important;
+}
+
+.image {
+    max-height: 300px;
+    max-width: 300px;
+}

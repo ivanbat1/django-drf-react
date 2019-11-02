@@ -10,9 +10,9 @@ class UserDetail extends Component {
                         <p>{this.props.user.name}</p>
                         <p>{this.props.user.surname}</p>
                         <p>{this.props.user.date_create}</p>
-                        <img src={this.props.user.img.includes('media/') ?
+                        <img className="image" src={this.props.user.img.includes('media/') ?
                             'http://127.0.0.1:8000' + this.props.user.img
-                            : 'http://127.0.0.1:8000/media/' + this.props.user.img} />
+                            : 'http://127.0.0.1:8000/media/' + this.props.user.img}/>
                     </div>
 
                 ) : null}
@@ -20,4 +20,5 @@ class UserDetail extends Component {
         )
     }
 }
+
 export default UserDetail;

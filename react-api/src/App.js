@@ -43,13 +43,13 @@ class App extends Component {
         this.setState({userForm: true, userSelect: null, addOrCreate: true})
     };
 
-    updateList = userSelect => {
+    addtoList = userSelect => {
         this.state.users.push(userSelect);
-        console.log(userSelect);
+        console.log('user select', userSelect);
         this.setState({users: this.state.users, userSelect: userSelect, userForm: false, addOrCreate: false})
     };
 
-    addtoList = (user) => {
+    updateList = (user) => {
         fetch('http://127.0.0.1:8000/api/test/', {
             method: 'GET'
         }).then(res => res.json())
@@ -66,9 +66,17 @@ class App extends Component {
                     <UsersList users={this.state.users} userClicked={this.userClicked}
                                removeUser={this.removeUser}
                                userEdit={this.editUser}/>
-                    <div>{this.state.userForm ? (<UserForm addtoList={this.addtoList} updateList={this.updateList} addOrCreate={this.state.addOrCreate}
-                            user={this.state.userSelect}/>)
-                        : (<UserDetail user={this.state.userSelect}/>)}
+                    <div>
+                        {this.state.userForm ?
+                            (
+                                <UserForm addtoList={this.addtoList} updateList={this.updateList}
+                                          addOrCreate={this.state.addOrCreate}
+                                          user={this.state.userSelect}/>
+                            )
+                            : (
+                                <UserDetail error={this.state.error} user={this.state.userSelect}/>
+                            )
+                        }
                     </div>
                 </div>
                 <button onClick={this.addUser}>add</button>
