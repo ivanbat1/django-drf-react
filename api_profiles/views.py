@@ -22,7 +22,7 @@ class Test(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({'message': serializer.data})
-        return Response({'message': serializer.errors})
+        return Response({'message': {'error': serializer.errors}})
 
     def put(self, request, pk=None):
         return Response({'message': 'call put method'})
@@ -55,7 +55,7 @@ class TestApiDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({'message': serializer.data})
-        return Response({'message': serializer.errors})
+        return Response({'message': {'error': serializer.errors}})
 
     def delete(self, request, pk):
         user = self.get_object(pk)

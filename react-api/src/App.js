@@ -13,6 +13,7 @@ class App extends Component {
             userSelect: null,
             userForm: null,
             addOrCreate: null,
+            errors: [],
         };
     }
 
@@ -44,18 +45,28 @@ class App extends Component {
     };
 
     addtoList = userSelect => {
-        this.state.users.push(userSelect);
-        console.log('user select', userSelect);
-        this.setState({users: this.state.users, userSelect: userSelect, userForm: false, addOrCreate: false})
+        if (userSelect.error) {
+            this.setState({errors: userSelect.error});
+        } else {
+            this.state.users.push(userSelect);
+            this.setState({users: this.state.users, userSelect: userSelect, userForm: false, addOrCreate: false})
+        }
     };
 
     updateList = (user) => {
-        fetch('http://127.0.0.1:8000/api/test/', {
-            method: 'GET'
-        }).then(res => res.json())
-            .then((resj) => this.setState({users: resj.message, userSelect: user, userForm: false, addOrCreate: false})
-            )
-            .catch(error => console.log(error))
+        if (user.error) {
+            this.setState({errors: user.error});
+            console.log(this.state.errors)
+        } else {
+            fetch('http://127.0.0.1:8000/api/test/', {
+                method: 'GET'
+            }).then(res => res.json())
+                .then((resj) => this.setState({users: resj.message, userSelect: user, userForm: false, addOrCreate: false}
+                        )
+                )
+                .catch(error => console.log(error))
+        }
+
     };
 
     render() {
@@ -69,12 +80,13 @@ class App extends Component {
                     <div>
                         {this.state.userForm ?
                             (
-                                <UserForm addtoList={this.addtoList} updateList={this.updateList}
+                                <UserForm errors={this.state.errors} addtoList={this.addtoList}
+                                          updateList={this.updateList}
                                           addOrCreate={this.state.addOrCreate}
                                           user={this.state.userSelect}/>
                             )
                             : (
-                                <UserDetail error={this.state.error} user={this.state.userSelect}/>
+                                <UserDetail user={this.state.userSelect}/>
                             )
                         }
                     </div>

@@ -29,3 +29,8 @@ table, th, td {
     max-height: 300px;
     max-width: 300px;
 }
+
+.error {
+    color: red;
+    font-size: 15px;
+}

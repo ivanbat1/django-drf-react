@@ -29,12 +29,11 @@ class UserForm extends Component {
         event.preventDefault();
         var send = true;
         for (let i in this.state) {
-            if (!this.state[i]) {
+            if (!this.state[i] && i !== 'file') {
                 send = false;
             }
         }
         if (send) {
-            console.log('img append', this.state.img);
             fetch(event.target.action, {
                 method: 'POST',
                 headers: {
@@ -60,8 +59,10 @@ class UserForm extends Component {
                                 <label>Name *</label><br/>
                                 <input type='text'
                                        onChange={this.setValue} name='name'/><br/>
+                                {this.props.errors.name ? (<p className='error'>{this.props.errors.name}</p>) : null}
                                 <label>Surname *</label><br/>
                                 <input type='text' onChange={this.setValue} name='surname'/><br/>
+                                {this.props.errors.surname ? (<p className='error'>{this.props.errors.surname}</p>) : null}
                                 <img src={this.props.user.img.includes('media/') ?
                                     'http://127.0.0.1:8000' + this.props.user.img
                                     : 'http://127.0.0.1:8000/media/' + this.props.user.img}/><br/>
@@ -77,10 +78,12 @@ class UserForm extends Component {
                                 <input className={this.state.name ? null : 'border'} type='text'
                                        onChange={this.setValue}
                                        name='name'/><br/>
+                                {this.props.errors.name ? (<p className='error'>{this.props.errors.name}</p>) : null}
                                 <label>Surname *</label><br/>
                                 <input className={this.state.surname ? null : 'border'} type='text'
                                        onChange={this.setValue}
                                        name='surname'/><br/>
+                                {this.props.errors.surname ? (<p className='error'>{this.props.errors.surname}</p>) : null}
                                 <input className="image" type='file' name="file"
                                        onChange={this.handleOnFileChange}
                                 /><br/>
