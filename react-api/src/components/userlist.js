@@ -23,12 +23,12 @@ class UsersList extends Component {
 
     render() {
         return (
-            <div>
-                <table className='table-my'>
+            <div className='col-sm'>
+                <table className="table table-striped table-dark">
                     <thead>
                         <tr>
-                            <th>name</th>
-                            <th>methods</th>
+                            <th scope="col">name</th>
+                            <th scope="col">methods</th>
                         </tr>
                     </thead>
                     {this.props.users.map(user => {

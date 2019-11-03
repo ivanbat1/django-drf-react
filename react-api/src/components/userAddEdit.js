@@ -54,40 +54,42 @@ class UserForm extends Component {
                 {this.props.user && this.props.addOrCreate !== true ?
                     (
                         <React.Fragment>
-                            <form action={'http://127.0.0.1:8000/api/test/' + this.props.user.id + '/'}
+                            <p>update form</p>
+                            <form className="form-group" action={'http://127.0.0.1:8000/api/test/' + this.props.user.id + '/'}
                                   onSubmit={this.formSubmit.bind(this, 1)}>
                                 <label>Name *</label><br/>
-                                <input type='text'
+                                <input placeholder={this.props.user.name} className='form-control' type='text'
                                        onChange={this.setValue} name='name'/><br/>
                                 {this.props.errors.name ? (<p className='error'>{this.props.errors.name}</p>) : null}
                                 <label>Surname *</label><br/>
-                                <input type='text' onChange={this.setValue} name='surname'/><br/>
+                                <input placeholder={this.props.user.surname} className="form-control" type='text' onChange={this.setValue} name='surname'/><br/>
                                 {this.props.errors.surname ? (<p className='error'>{this.props.errors.surname}</p>) : null}
-                                <img src={this.props.user.img.includes('media/') ?
+                                <img className='image' src={this.props.user.img.includes('media/') ?
                                     'http://127.0.0.1:8000' + this.props.user.img
                                     : 'http://127.0.0.1:8000/media/' + this.props.user.img}/><br/>
-                                <input className="image" type='file' onChange={this.setValue} name='file'/><br/>
-                                <button type='submit'>save</button>
+                                <input type='file' onChange={this.setValue} name='file'/><br/>
+                                <button className='btn btn-primary' type='submit'>Save</button>
                             </form>
                         </React.Fragment>
                     )
                     : (
                         <React.Fragment>
-                            <form action='http://127.0.0.1:8000/api/test/' onSubmit={this.formSubmit.bind(this, 0)}>
+                            <p>add form</p>
+                            <form className="form-group" action='http://127.0.0.1:8000/api/test/' onSubmit={this.formSubmit.bind(this, 0)}>
                                 <label>Name *</label><br/>
-                                <input className={this.state.name ? null : 'border'} type='text'
+                                <input className={this.state.name ? 'form-control' : 'form-control border'} type='text'
                                        onChange={this.setValue}
                                        name='name'/><br/>
                                 {this.props.errors.name ? (<p className='error'>{this.props.errors.name}</p>) : null}
                                 <label>Surname *</label><br/>
-                                <input className={this.state.surname ? null : 'border'} type='text'
+                                <input className={this.state.surname ? 'form-control' : 'form-control border'} type='text'
                                        onChange={this.setValue}
                                        name='surname'/><br/>
                                 {this.props.errors.surname ? (<p className='error'>{this.props.errors.surname}</p>) : null}
                                 <input className="image" type='file' name="file"
                                        onChange={this.handleOnFileChange}
                                 /><br/>
-                                <button type='submit'>save</button>
+                                <button className='btn btn-primary' type='submit'>Save</button>
                             </form>
                         </React.Fragment>
                     )

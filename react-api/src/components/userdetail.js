@@ -7,9 +7,9 @@ class UserDetail extends Component {
             <React.Fragment>
                 {this.props.user ? (
                     <div>
-                        <p>{this.props.user.name}</p>
-                        <p>{this.props.user.surname}</p>
-                        <p>{this.props.user.date_create}</p>
+                        <p>name: {this.props.user.name}</p>
+                        <p>surname: {this.props.user.surname}</p>
+                        <p>create: {this.props.user.date_create}</p>
                         <img className="image" src={this.props.user.img.includes('media/') ?
                             'http://127.0.0.1:8000' + this.props.user.img
                             : 'http://127.0.0.1:8000/media/' + this.props.user.img}/>

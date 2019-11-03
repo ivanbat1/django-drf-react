@@ -61,8 +61,13 @@ class App extends Component {
             fetch('http://127.0.0.1:8000/api/test/', {
                 method: 'GET'
             }).then(res => res.json())
-                .then((resj) => this.setState({users: resj.message, userSelect: user, userForm: false, addOrCreate: false}
-                        )
+                .then((resj) => this.setState({
+                        users: resj.message,
+                        userSelect: user,
+                        userForm: false,
+                        addOrCreate: false
+                    }
+                    )
                 )
                 .catch(error => console.log(error))
         }
@@ -73,25 +78,31 @@ class App extends Component {
         return (
             <div className='App'>
                 <h1>Users</h1>
-                <div className='layout'>
-                    <UsersList users={this.state.users} userClicked={this.userClicked}
-                               removeUser={this.removeUser}
-                               userEdit={this.editUser}/>
-                    <div>
-                        {this.state.userForm ?
-                            (
-                                <UserForm errors={this.state.errors} addtoList={this.addtoList}
-                                          updateList={this.updateList}
-                                          addOrCreate={this.state.addOrCreate}
-                                          user={this.state.userSelect}/>
-                            )
-                            : (
-                                <UserDetail user={this.state.userSelect}/>
-                            )
-                        }
+
+                <div className='container'>
+                    <div className='row'>
+                        <div className='col-sm'>
+                            <button className='btn btn-primary' onClick={this.addUser}>Add</button>
+                            <UsersList users={this.state.users} userClicked={this.userClicked}
+                                       removeUser={this.removeUser}
+                                       userEdit={this.editUser}/>
+                        </div>
+                        <div className='col-sm'>
+                            {this.state.userForm ?
+                                (
+                                    <UserForm errors={this.state.errors} addtoList={this.addtoList}
+                                              updateList={this.updateList}
+                                              addOrCreate={this.state.addOrCreate}
+                                              user={this.state.userSelect}/>
+                                )
+                                : (
+                                    <UserDetail user={this.state.userSelect}/>
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
-                <button onClick={this.addUser}>add</button>
+
             </div>
         )
     }

@@ -5,20 +5,7 @@
     align-items: center;
     font-size: calc(10px + 2vmin);
     color: white;
-    padding-right: 300px;
-}
-
-.layout {
-    text-align: center;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-
-table, th, td {
-    text-align: center;
-    margin-left: 100px;
-    border: 1px solid white;
+    /*padding-right: 300px;*/
 }
 
 .border {
@@ -34,3 +21,4 @@ table, th, td {
     color: red;
     font-size: 15px;
 }
+
